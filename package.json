@@ -1,27 +1,35 @@
 {
   "name": "spin-calc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "lite-server",
-    "lint": "eslint 'ts/index.ts' --quiet --fix"
+    "ts": "tsc -w",
+    "serve": "concurrently --kill-others \"npm run start\" \"npm run ts\"",
+    "lint": "eslint 'ts/index.ts' --quiet --fix",
+	"wp": "webpack serve --config webpack.config.js",
+	"start": "webpack serve --open"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  },
   "devDependencies": {
     "@types/node": "^14.14.16",
-    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.11.0",
     "eslint": "^7.16.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.3.0",
     "lite-server": "^2.6.1",
     "prettier": "^2.2.1",
-    "typescript": "^4.1.3"
+    "ts-loader": "^8.0.14",
+    "typescript": "^4.1.3",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }

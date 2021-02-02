@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars */
-type Payouts = {
+import { Spin } from './Spin';
+import { Bonus } from './Bonus';
+
+export type Payouts = {
 	x1: number,
 	x2: number,
 	x3: number,
@@ -8,18 +11,23 @@ type Payouts = {
 	x6: number
 }
 
-type SlotSymbol = {
+export type SlotSymbol = {
     name: string,
 	payouts: Payouts,
 	chances: number
 }
 
-type Spins = {
+export type Spins = {
 	result: Spin[],
 	bonus?: Bonus[]
 }
 
-const featuresArray = [ 'Additional reel',
+export type Winnings = {
+	s: Symbol,
+	pat: number[][]
+}
+
+export const featuresArray = [ 'Additional reel',
 	'8 Free Spins',
 	'+ x3 Multiplier',
 	'4 Free Spins',
@@ -37,20 +45,20 @@ const featuresArray = [ 'Additional reel',
 	'+ 1x Multiplier' 
 ] as const;
 
-type Features = typeof featuresArray[number];	
+export type Features = typeof featuresArray[number];	
 
-const FeaturesChances = [
+export const FeaturesChances = [
 	2, 4, 4, 9, 8.5, 7.5, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10
 ] as const;
 
-const FeaturesRanges: number[] = [];
+export const FeaturesRanges: number[] = [];
 
 //Fill ranges
 FeaturesChances.forEach((el, index) => {
 	FeaturesRanges[index] = el + (index > 0 ? FeaturesRanges[index-1] : 0);
 });
 
-const names = [
+export const names = [
 	'diamond',
 	'club', 
 	'heart',
@@ -62,7 +70,7 @@ const names = [
 	'wild'
 ] as const;
 
-const payouts: Payouts[] = [
+export const payouts: Payouts[] = [
 	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
 	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
 	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
@@ -71,21 +79,21 @@ const payouts: Payouts[] = [
 	{x1: 0, x2: 0, x3: 2, x4: 4, x5: 10, x6: 100},
 	{x1: 0, x2: 0, x3: 3, x4: 6, x5: 15, x6: 150},
 	{x1: 0, x2: 0, x3: 5, x4: 15, x5: 30, x6: 500},
-	{x1: 0, x2: 0, x3: 0, x4: 0, x5: 500, x6: 2500},
+	{x1: 0, x2: 0, x3: 15, x4: 100, x5: 500, x6: 2500},
 ];
 
-const chances = [
+export const chances = [
 	175, 175, 175, 175, 100, 75, 60, 35, 30
 ] as const;
 
-const chancesRanges: number[] = [];
+export const chancesRanges: number[] = [];
 
 // Fill ranges
 chances.forEach((el, index) => {
 	chancesRanges[index] = el + (index > 0 ? chancesRanges[index-1] : 0);
 });
 
-const slotSymbols: SlotSymbol[] = [
+export const slotSymbols: SlotSymbol[] = [
 	{name: names[0], payouts: payouts[0], chances: chances[0]} as const,
 	{name: names[1], payouts: payouts[1], chances: chances[1]} as const,
 	{name: names[2], payouts: payouts[2], chances: chances[2]} as const,
@@ -97,59 +105,19 @@ const slotSymbols: SlotSymbol[] = [
 	{name: names[8], payouts: payouts[8], chances: chances[8]} as const,
 ];
 
-const LEVELS = [
-	[ 0, 1, 3, 1, 0 ],
-	[ 0, 3, 3, 3, 0 ],
+export const LEVELS = [
+	[ 1, 3, 1 ],
+	[ 3, 3, 3 ],
 	[ 1, 3, 5, 3, 1 ],
 	[ 3, 3, 5, 3, 3 ],
 	[ 3, 5, 5, 5, 3 ],
 	[ 5, 5, 5, 5, 5 ]
 ] as const;
 
-class Spin {
-	bet: number = 0;
-	resultBoard: SlotSymbol[][] = [];
-	stage: number;
-
-	constructor(bet: number, stage: number) {
-		this.bet = bet;
-		this.stage = stage;
-
-		this.drawSymbols();
-
-		console.log(this.resultBoard);
-	}
-
-	drawSymbol() {
-		const temp = Math.floor(Math.random() * 1000);
-		for(const el of chancesRanges) {
-			if(temp < el) {
-				return slotSymbols[chancesRanges.indexOf(el)];
-			}
-		}
-		throw new Error(`Couldn't draw any symbol`);
-	}
-
-	drawSymbols() {
-		for(let i = 0; i < 5; i++) {
-			this.resultBoard[i]= [];
-			for(let j = 0; j < LEVELS[this.stage][i]; j++) {
-				this.resultBoard[i][j] = this.drawSymbol();
-			}
-		}
-	}
+function calculate(bet: number) {
+	const stage = 1;
+	const s = new Spin(bet, stage);
+	return s;
 }
 
-class Bonus {
-	spins: Spin[] = [];
-	features: [Features, Features, Features] | [] = [ ];
-	bet: number;
-
-	constructor(bet: number) {
-		this.bet = bet;
-	}
-}
-
-function calculate(bet: number): Spin {
-	return new Spin(bet, 5);
-}
+document.body.innerHTML = JSON.stringify(calculate(5));
