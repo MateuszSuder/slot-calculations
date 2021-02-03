@@ -8,8 +8,8 @@
     "ts": "tsc -w",
     "serve": "concurrently --kill-others \"npm run start\" \"npm run ts\"",
     "lint": "eslint 'ts/index.ts' --quiet --fix",
-	"wp": "webpack serve --config webpack.config.js",
-	"start": "webpack serve --open"
+    "wp": "webpack serve --config webpack.config.js",
+    "start": "webpack serve --open"
   },
   "author": "",
   "license": "ISC",
