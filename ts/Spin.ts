@@ -34,18 +34,30 @@ export class Spin {
 		}
 	}
 
-	checkForWinnings(): Winnings[] {
+	checkForWinnings(): Winnings[] { 
 		console.log(this.resultBoard);
 		const result: Winnings[] = [];
-		const test: any[] = [];
-		for(let i = 0; i < LEVELS[this.stage][0]; i++) {
-			const first = [ this.resultBoard[0][i] ];
-			for(let j = 1; j < LEVELS[this.stage].length; j++) {
-				for(let k = 0; k < LEVELS[this.stage][j]; k++) {
-					const third = [ ...first, this.resultBoard[j][k] ];
-				}
+		const allPossibilites: SlotSymbol[][] = [];
+		this.resultBoard.forEach((el, i) => {
+			allPossibilites[i] = [];
+			const lengthBefore = allPossibilites.length;
+			if(i === 0) {
+				el.forEach((ch, k) => {
+					allPossibilites[k] = ([ ch ]);
+				});
+			} else {
+				console.log(lengthBefore);
+				el.forEach(ch => {
+					for(let j = 0; j < lengthBefore; j++) {
+						allPossibilites.push([ ...allPossibilites[j], ch ]);
+					}
+				});
+				allPossibilites.splice(0, lengthBefore);
 			}
-		}
+		});
+		allPossibilites.forEach(el => {
+			console.log(el);
+		});
 		return [];
 	}
 }
