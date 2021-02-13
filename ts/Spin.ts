@@ -34,30 +34,29 @@ export class Spin {
 		}
 	}
 
-	checkForWinnings(): Winnings[] { 
-		console.log(this.resultBoard);
+	checkForWinnings(): Winnings { 
 		const result: Winnings[] = [];
 		const allPossibilites: SlotSymbol[][] = [];
-		this.resultBoard.forEach((el, i) => {
-			allPossibilites[i] = [];
-			const lengthBefore = allPossibilites.length;
-			if(i === 0) {
-				el.forEach((ch, k) => {
-					allPossibilites[k] = ([ ch ]);
+		this.resultBoard.forEach((a, index) => {
+			if(index === 0) { // For first reel
+				a.forEach(b => {
+					allPossibilites.push([ b ]);
 				});
 			} else {
-				console.log(lengthBefore);
-				el.forEach(ch => {
-					for(let j = 0; j < lengthBefore; j++) {
-						allPossibilites.push([ ...allPossibilites[j], ch ]);
+				if(allPossibilites.length === 0) { 
+					return '';
+				}
+				const max = allPossibilites.length;
+				a.forEach(b => {
+					for(let i = 0; i < max; i++) {
+						allPossibilites.push([ ...allPossibilites[i], b ]);
 					}
 				});
-				allPossibilites.splice(0, lengthBefore);
+				allPossibilites.splice(0, max);
 			}
 		});
-		allPossibilites.forEach(el => {
-			console.log(el);
-		});
-		return [];
+		console.log(allPossibilites);
+
+		return { win: 0, list: [] };
 	}
 }

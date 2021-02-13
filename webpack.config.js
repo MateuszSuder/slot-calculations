@@ -25,6 +25,5 @@ module.exports = {
 		path: path.resolve(__dirname, 'build/js'),
 		publicPath: '/js'
 	},
-	watch: true,
 	mode: 'development'
 };

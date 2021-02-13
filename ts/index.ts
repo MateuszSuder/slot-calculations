@@ -22,14 +22,19 @@ export type Spins = {
 	bonus?: Bonus[]
 }
 
-type cords = {
+type pos = {
 	x: number,
 	y: number
 }
-export type Winnings = {
+export type Win = {
 	s: Symbol,
-	pos: cords[],
+	pos: pos[],
 	win: number
+}
+
+export type Winnings = {
+	win: number,
+	list: Win[]
 }
 
 export const featuresArray = [ 'Additional reel',
