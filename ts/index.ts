@@ -27,13 +27,13 @@ type pos = {
 	y: number
 }
 export type Win = {
-	s: Symbol,
-	pos: pos[],
-	win: number
+	s: SlotSymbol,
+	position: number[][], // x - index, y - number
+	win?: number
 }
 
 export type Winnings = {
-	win: number,
+	win?: number
 	list: Win[]
 }
 
@@ -102,6 +102,7 @@ export const chancesRanges: number[] = [];
 chances.forEach((el, index) => {
 	chancesRanges[index] = el + (index > 0 ? chancesRanges[index-1] : 0);
 });
+
 
 export const slotSymbols: SlotSymbol[] = [
 	{name: names[0], payouts: payouts[0], chances: chances[0]} as const,

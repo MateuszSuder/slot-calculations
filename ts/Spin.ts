@@ -1,4 +1,4 @@
-import { chancesRanges, LEVELS, SlotSymbol, slotSymbols, Winnings } from './index';
+import { chancesRanges, chances, LEVELS, SlotSymbol, slotSymbols, Winnings } from './index';
 
 /* eslint-disable no-unused-vars */
 export class Spin {
@@ -15,8 +15,8 @@ export class Spin {
 		this.checkForWinnings();
 	}
 
-	drawSymbol() {
-		const temp = Math.floor(Math.random() * 1000);
+	drawSymbol(max: number) {
+		const temp = Math.floor(Math.random() * max);
 		for(const el of chancesRanges) {
 			if(temp < el) {
 				return slotSymbols[chancesRanges.indexOf(el)];
@@ -26,37 +26,66 @@ export class Spin {
 	}
 
 	drawSymbols() {
+		const countMax = () => {
+			let counter = 0;
+			chances.forEach(element => {
+				counter += element;
+			});
+			return counter;
+		};
+		const max = countMax();
 		for(let i = 0; i < LEVELS[this.stage].length; i++) {
 			this.resultBoard[i]= [];
 			for(let j = 0; j < LEVELS[this.stage][i]; j++) {
-				this.resultBoard[i][j] = this.drawSymbol();
+				this.resultBoard[i][j] = this.drawSymbol(max);
 			}
 		}
 	}
 
 	checkForWinnings(): Winnings { 
-		const result: Winnings[] = [];
-		const allPossibilites: SlotSymbol[][] = [];
-		this.resultBoard.forEach((a, index) => {
-			if(index === 0) { // For first reel
-				a.forEach(b => {
-					allPossibilites.push([ b ]);
+		const result: Winnings = {
+			list: []
+		};
+		// Initalize result :)
+		slotSymbols.forEach(s => {
+			result.list.push({
+				s: s,
+				position: [ [] ]
+			});
+		});
+
+		this.resultBoard.forEach((reel, i) => {
+			if(i === 0) {
+				reel.forEach((symbol, j) => { 
+					result.list[slotSymbols.indexOf(symbol)].position[i].push(j);
 				});
 			} else {
-				if(allPossibilites.length === 0) { 
-					return '';
-				}
-				const max = allPossibilites.length;
-				a.forEach(b => {
-					for(let i = 0; i < max; i++) {
-						allPossibilites.push([ ...allPossibilites[i], b ]);
+				reel.forEach((symbol, j) => {
+					if(result.list[slotSymbols.indexOf(symbol)].position[i - 1] && result.list[slotSymbols.indexOf(symbol)].position[i - 1].length > 0) {
+						if(!result.list[slotSymbols.indexOf(symbol)].position[i])
+							result.list[slotSymbols.indexOf(symbol)].position.push([]);
+						result.list[slotSymbols.indexOf(symbol)].position[i].push(j);
+					}
+					if(symbol.name === slotSymbols[slotSymbols.length - 1].name) {
+						result.list.forEach((a, i) => {
+							if(i == result.list.length - 1) return;
+							if(a.position[i - 1] && a.position[i - 1].length > 0) {
+								if(!a.position[i])
+									a.position.push([]);
+								a.position[i].push(j);
+							}
+						});
 					}
 				});
-				allPossibilites.splice(0, max);
 			}
 		});
-		console.log(allPossibilites);
-
-		return { win: 0, list: [] };
+		this.resultBoard.forEach(el => {
+			console.table(el);
+		});
+		result.list.forEach(element => {
+			console.log(element.s);
+			console.log(element.position);
+		});
+		return result;
 	}
 }
