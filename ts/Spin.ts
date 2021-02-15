@@ -16,9 +16,9 @@ export class Spin {
 	}
 
 	drawSymbol(max: number) {
-		const temp = Math.floor(Math.random() * max);
-		for(const el of chancesRanges) {
-			if(temp < el) {
+		const n = Math.floor(Math.random() * max); // Assign random number in range
+		for(const el of chancesRanges) { // Find symbol
+			if(n < el) {
 				return slotSymbols[chancesRanges.indexOf(el)];
 			}
 		}
@@ -54,25 +54,25 @@ export class Spin {
 			});
 		});
 
-		this.resultBoard.forEach((reel, i) => {
-			if(i === 0) {
-				reel.forEach((symbol, j) => { 
+		this.resultBoard.forEach((reel, i) => { // Start checking every reel
+			if(i === 0) { // If its first reel
+				reel.forEach((symbol, j) => { // Just push those to our result
 					result.list[slotSymbols.indexOf(symbol)].position[i].push(j);
 				});
-			} else {
-				reel.forEach((symbol, j) => {
-					if(result.list[slotSymbols.indexOf(symbol)].position[i - 1] && result.list[slotSymbols.indexOf(symbol)].position[i - 1].length > 0) {
-						if(!result.list[slotSymbols.indexOf(symbol)].position[i])
+			} else { // Otherwise...
+				reel.forEach((symbol, j) => { // Iterate every symbol
+					if(result.list[slotSymbols.indexOf(symbol)].position[i - 1] && result.list[slotSymbols.indexOf(symbol)].position[i - 1].length > 0) { // If theres symbol on reel before
+						if(!result.list[slotSymbols.indexOf(symbol)].position[i]) // In not initalized
 							result.list[slotSymbols.indexOf(symbol)].position.push([]);
-						result.list[slotSymbols.indexOf(symbol)].position[i].push(j);
+						result.list[slotSymbols.indexOf(symbol)].position[i].push(j); // Push Y-cord of symbol
 					}
-					if(symbol.name === slotSymbols[slotSymbols.length - 1].name) {
-						result.list.forEach((a, i) => {
-							if(i === result.list.length - 1) return;
-							if(a.position[i - 1] && a.position[i - 1].length > 0) {
-								if(!a.position[i])
-									a.position.push([]);
-								a.position[i].push(j);
+					if(symbol.name === slotSymbols[slotSymbols.length - 1].name) { // If its wild
+						result.list.forEach((a, i) => { // We need to add to every symbol win
+							if(i === result.list.length - 1) return; // If last, break
+							if(a.position[i - 1] && a.position[i - 1].length > 0) { // If theres symbol before that connects
+								if(!a.position[i]) // If not initalized
+									a.position.push([]); // Initalize
+								a.position[i].push(j); // Push Y cord
 							}
 						});
 					}
@@ -87,9 +87,17 @@ export class Spin {
 		});
 
 		result.list.forEach(el => { // Count single wins
-			const res: Payout = 'x' + el.position.length as Payout;
-			el.win = (el.s.payouts[res] * this.bet);
+			const res: Payout = 'x' + el.position.length as Payout; // How many times appeard transformed to index
+			el.win = (el.s.payouts[res] * this.bet); // Win for one combination
+			
+			el.position.forEach(p => { // Count for every combination
+				if(el.win !== undefined) { // Make sure its not undefined
+					el.win *= p.length; // Multiply by times appeard
+				}
+			});
 		});
+
+		console.log(result);
 
 		return result;
 	}
