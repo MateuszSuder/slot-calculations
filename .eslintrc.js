@@ -29,5 +29,7 @@ module.exports = {
     "no-multi-spaces": "error",
     "space-before-blocks": ["warn", "always"],
     "max-classes-per-file": ["error", 1],
+    "space-infix-ops": "error",
+    "eqeqeq": "error"
   },
 };

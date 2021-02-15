@@ -68,7 +68,7 @@ export const FeaturesRanges: number[] = [];
 
 //Fill ranges
 FeaturesChances.forEach((el, index) => {
-	FeaturesRanges[index] = el + (index > 0 ? FeaturesRanges[index-1] : 0);
+	FeaturesRanges[index] = el + (index > 0 ? FeaturesRanges[index - 1] : 0);
 });
 
 export const names = [
@@ -103,7 +103,7 @@ export const chancesRanges: number[] = [];
 
 // Fill ranges
 chances.forEach((el, index) => {
-	chancesRanges[index] = el + (index > 0 ? chancesRanges[index-1] : 0);
+	chancesRanges[index] = el + (index > 0 ? chancesRanges[index - 1] : 0);
 });
 
 

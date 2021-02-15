@@ -3,8 +3,8 @@ import { chancesRanges, chances, LEVELS, SlotSymbol, slotSymbols, Winnings, Payo
 /* eslint-disable no-unused-vars */
 export class Spin {
 	bet: number = 0;
-	resultBoard: SlotSymbol[][]= [];
-	stage: number;
+	resultBoard: SlotSymbol[][]= []; // Result stored in two dimensional array [reel][row]
+	stage: number; // Which stage is spin in (Check LEVELS) - 0-5
 
 	constructor(bet: number, stage: number) {
 		this.bet = bet;
@@ -32,11 +32,11 @@ export class Spin {
 				counter += element;
 			});
 			return counter;
-		};
-		const max = countMax();
-		for(let i = 0; i < LEVELS[this.stage].length; i++) {
-			this.resultBoard[i]= [];
-			for(let j = 0; j < LEVELS[this.stage][i]; j++) {
+		}; // Function for calculating max boundry
+		const max = countMax(); // Assign max boundry
+		for(let i = 0; i < LEVELS[this.stage].length; i++) { // Length of array - number of reels
+			this.resultBoard[i] = []; // Initalize board
+			for(let j = 0; j < LEVELS[this.stage][i]; j++) { // Draw symbol for each field
 				this.resultBoard[i][j] = this.drawSymbol(max);
 			}
 		}
@@ -68,7 +68,7 @@ export class Spin {
 					}
 					if(symbol.name === slotSymbols[slotSymbols.length - 1].name) {
 						result.list.forEach((a, i) => {
-							if(i == result.list.length - 1) return;
+							if(i === result.list.length - 1) return;
 							if(a.position[i - 1] && a.position[i - 1].length > 0) {
 								if(!a.position[i])
 									a.position.push([]);
