@@ -16,13 +16,13 @@ module.exports = {
 		extensions: [ '.tsx', '.ts', '.js' ],
 	},
 	devServer: {
-		contentBase: './build',
+		contentBase: './dev',
 		compress: true,
 		port: 9000
 	},
 	output: {
 		filename: 'bundle.js',
-		path: path.resolve(__dirname, 'build/js'),
+		path: path.resolve(__dirname, 'dev/js'),
 		publicPath: '/js'
 	},
 	mode: 'development'

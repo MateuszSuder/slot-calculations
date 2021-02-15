@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+console.log('%cIndex.ts initalized', 'background: #000; color: #f00; font-size: 1rem; display: block; padding: 30px 100px;');
 import { Spin } from './Spin';
 import { Bonus } from './Bonus';
 
@@ -11,6 +11,8 @@ export type Payouts = {
 	x6: number
 }
 
+export type Payout = keyof Payouts;
+
 export type SlotSymbol = {
     name: string,
 	payouts: Payouts,
@@ -22,10 +24,11 @@ export type Spins = {
 	bonus?: Bonus[]
 }
 
-type pos = {
-	x: number,
-	y: number
-}
+// type pos = {
+// 	x: number,
+// 	y: number
+// }
+
 export type Win = {
 	s: SlotSymbol,
 	position: number[][], // x - index, y - number

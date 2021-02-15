@@ -1,5 +1,5 @@
-import { chancesRanges, chances, LEVELS, SlotSymbol, slotSymbols, Winnings } from './index';
-
+console.log('%cSpin.ts initalized', 'background: #000; color: #f00; font-size: 1rem; display: block; padding: 30px 100px');
+import { chancesRanges, chances, LEVELS, SlotSymbol, slotSymbols, Winnings, Payout } from './index';
 /* eslint-disable no-unused-vars */
 export class Spin {
 	bet: number = 0;
@@ -79,13 +79,18 @@ export class Spin {
 				});
 			}
 		});
+
+		result.list = result.list.filter(el => el.position.length >= 3); // Filter not needed results
+
 		this.resultBoard.forEach(el => {
 			console.table(el);
 		});
-		result.list.forEach(element => {
-			console.log(element.s);
-			console.log(element.position);
+
+		result.list.forEach(el => { // Count single wins
+			const res: Payout = 'x' + el.position.length as Payout;
+			el.win = (el.s.payouts[res] * this.bet);
 		});
+
 		return result;
 	}
 }
