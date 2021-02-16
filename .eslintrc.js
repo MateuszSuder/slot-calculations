@@ -30,6 +30,7 @@ module.exports = {
     "space-before-blocks": ["warn", "always"],
     "max-classes-per-file": ["error", 1],
     "space-infix-ops": "error",
-    "eqeqeq": "error"
+    "eqeqeq": "error",
+    'indent': 'off'
   },
 };
