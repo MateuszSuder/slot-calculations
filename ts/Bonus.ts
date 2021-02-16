@@ -5,10 +5,12 @@ import { Spin } from './Spin';
 
 export class Bonus {
 	spins: Spin[] = [];
-	features: [Features, Features, Features] | [] = [ ];
+	features: [Features, Features, Features];
 	bet: number;
 
-	constructor(bet: number) {
+	constructor(bet: number, features: [Features, Features, Features]) {
 		this.bet = bet;
+
+		this.features = features;
 	}
 }

@@ -7,7 +7,6 @@ export class Spins {
     totalWin = 0;
 
     bonus?: Bonus;
-    bonusFeatures?: Features[];
     
     spins: Spin[] = [];
     bet: Bet = 0;
@@ -32,7 +31,7 @@ export class Spins {
 		throw new Error(`Couldn't draw any feature`);
     }
 
-    private getFeatures() {
+    private getFeatures(): [Features, Features, Features] {
         const countMax = () => {
 			let counter = 0;
 			FeaturesChances.forEach(element => {
@@ -41,10 +40,8 @@ export class Spins {
 			return counter;
 		}; // Function for calculating max boundry
 		const max = countMax(); // Assign max boundry
-        this.bonusFeatures = [];
-        for(let i = 0; i < 3; i++) {
-            this.bonusFeatures.push(this.getFeature(max));
-        }
+
+		return [ this.getFeature(max), this.getFeature(max), this.getFeature(max) ];
     }
     
     private getSpins() {
@@ -55,11 +52,19 @@ export class Spins {
             spins.push(spin);
 
             if(spin.checkForWinnings().win === 0) {
-                break;
+                return spins;
             }
 
             if(i === LEVELS.length - 1) {
-                this.getFeatures();
+				for(let j = 0; j < 3; j++) {
+					const spin = new Spin(this.bet, i);
+					spins.push(spin);
+					if(spin.checkForWinnings().win === 0) {
+						return spins;
+					}
+				}
+                const features = this.getFeatures();
+				this.bonus = new Bonus(this.bet, features);
             }
         }
         return spins;
