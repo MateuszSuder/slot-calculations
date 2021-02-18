@@ -35,11 +35,7 @@ export type Winnings = {
 	list: Win[]
 }
 
-export const featuresArray = [ 'Additional reel',
-	'8 Free Spins',
-	'+ x3 Multiplier',
-	'4 Free Spins',
-	'+ x2 Multiplier',
+export const featuresArray = [ 'Additional reel', // 1 position is already too much, let's stick with that
 	'Expand every normal wild by 1',
 	'Transform Triangle Diamond into wild',
 	'Transform Square Diamond into wild',
@@ -48,15 +44,19 @@ export const featuresArray = [ 'Additional reel',
 	'Expand second reel',
 	'Expand third reel',
 	'Expand fourth reel',
+	'8 Free Spins',
+	'4 Free Spins',
 	'2 Free spins',
 	'1 Free spin',
-	'+ 1x Multiplier' 
+	'+ x3 Multiplier',
+	'+ x2 Multiplier',
+	'+ x1 Multiplier' 
 ] as const;
 
 export type Features = typeof featuresArray[number];	
 
 export const FeaturesChances = [
-	2, 4, 4, 5, 5, 5, 5, 5, 5, 5, 7.5, 8.5, 9, 10, 10, 10
+	2, 4, 5, 5, 5, 5, 5, 6, 8, 5, 10, 20, 30, 5, 20, 30
 ] as const;
 
 export const FeaturesRanges: number[] = [];
@@ -105,15 +105,15 @@ export const bets = [
 export type Bet = typeof bets[number];
 
 export const payouts: Payouts[] = [
-	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
-	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
-	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
-	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 2.5, x6: 25},
-	{x1: 0, x2: 0, x3: 1, x4: 2, x5: 5, x6: 50},
-	{x1: 0, x2: 0, x3: 2, x4: 4, x5: 10, x6: 100},
-	{x1: 0, x2: 0, x3: 3, x4: 6, x5: 15, x6: 150},
-	{x1: 0, x2: 0, x3: 5, x4: 15, x5: 30, x6: 200},
-	{x1: 0, x2: 0, x3: 15, x4: 50, x5: 100, x6: 250},
+	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
+	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
+	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
+	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
+	{x1: 0, x2: 0, x3: 1, x4: 2, x5: 3.5, x6: 6},
+	{x1: 0, x2: 0, x3: 2, x4: 3, x5: 6, x6: 7},
+	{x1: 0, x2: 0, x3: 3, x4: 4, x5: 6.5, x6: 8},
+	{x1: 0, x2: 0, x3: 3.5, x4: 5, x5: 7.5, x6: 9},
+	{x1: 0, x2: 0, x3: 7.5, x4: 10, x5: 12.5, x6: 10},
 ];
 
 export const chances = [
@@ -157,6 +157,13 @@ export const LEVELS = [
 	[ 3, 5, 5, 5, 3 ],
 	[ 5, 5, 5, 5, 5 ]
 ] as const;
+
+export type bonusExtend = {
+	LEVEL: [[number, number, number, number, number, number] | [number, number, number, number, number]],
+	SYMBOLS: typeof slotSymbols[number][] | typeof specialSymbols[number][],
+	MULTI: 1 | 2 | 3 | 4 | 5 | 6,
+	EXPAND: boolean
+}
 
 function calculate(bet: number) {
 	const s = new Spins(bet);

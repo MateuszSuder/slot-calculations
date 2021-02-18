@@ -7,3 +7,5 @@ coverage
 
 dev/js
 .eslintrc.js
+
+build

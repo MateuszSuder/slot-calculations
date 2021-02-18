@@ -1,15 +1,21 @@
 console.log('%cSpin.ts initalized', 'background: #000; color: #f00; font-size: 1rem; display: block; padding: 30px 100px');
-import { chancesRanges, chances, LEVELS, SlotSymbol, slotSymbols, Winnings, Payout } from './index';
+import { chancesRanges, chances, LEVELS, SlotSymbol, slotSymbols, Winnings, Payout, bonusExtend } from './index';
 /* eslint-disable no-unused-vars */
 export class Spin {
 	bet: number = 0;
 	resultBoard: SlotSymbol[][]= []; // Result stored in two dimensional array [reel][row]
-	stage: number; // Which stage is spin in (Check LEVELS) - 0-5
+	stage?: number; // Which stage is spin in (Check LEVELS) - 0-5
+	bonus?: bonusExtend
 	winning: Winnings = { list: [] }; // Winnings
 
-	constructor(bet: number, stage: number) {
+	constructor(bet: number, rest: {stage?: number, bonus?: bonusExtend}) {
 		this.bet = bet;
-		this.stage = stage;
+		if(!(rest.stage !== undefined || rest.bonus))
+			throw new Error(`Spin component didn't received neither stage nor bonus options :( ${rest}`);
+		if(rest.stage !== undefined)
+			this.stage = rest.stage;
+		if(rest.bonus !== undefined)
+			this.bonus = rest.bonus;
 
 		this.drawSymbols();
 	}
@@ -33,9 +39,9 @@ export class Spin {
 			return counter;
 		}; // Function for calculating max boundry
 		const max = countMax(); // Assign max boundry
-		for(let i = 0; i < LEVELS[this.stage].length; i++) { // Length of array - number of reels
+		for(let i = 0; i < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus ? this.bonus.LEVEL : new Error(`Neither stage nor bonus defined`)); i++) { // Length of array - number of reels
 			this.resultBoard[i] = []; // Initalize board
-			for(let j = 0; j < LEVELS[this.stage][i]; j++) { // Draw symbol for each field
+			for(let j = 0; j < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus ? this.bonus.LEVEL : new Error(`Neither stage nor bonus defined`)); j++) { // Draw symbol for each field
 				this.resultBoard[i][j] = this.drawSymbol(max);
 			}
 		}
