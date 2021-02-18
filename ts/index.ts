@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 console.log('%cIndex.ts initalized', 'background: #000; color: #f00; font-size: 1rem; display: block; padding: 30px 100px;');
+import { Bonus } from './Bonus';
 import { Spins } from './Spins';
 
 export type Payouts = {
@@ -166,8 +168,9 @@ export type bonusExtend = {
 }
 
 function calculate(bet: number) {
-	const s = new Spins(bet);
-	console.log(s);
-	return s;
+	//const s = new Spins(bet);
+	const b = new Bonus(bet);
+	console.log(b);
+	return b;
 }
 document.body.innerHTML = JSON.stringify(calculate(10));

@@ -24,6 +24,9 @@ export class Spin {
 		const n = Math.floor(Math.random() * max); // Assign random number in range
 		for(const el of chancesRanges) { // Find symbol
 			if(n < el) {
+				if(this.bonus !== undefined) {
+					return this.bonus.SYMBOLS[chancesRanges.indexOf(el)];
+				}
 				return slotSymbols[chancesRanges.indexOf(el)];
 			}
 		}
@@ -39,9 +42,9 @@ export class Spin {
 			return counter;
 		}; // Function for calculating max boundry
 		const max = countMax(); // Assign max boundry
-		for(let i = 0; i < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus ? this.bonus.LEVEL : new Error(`Neither stage nor bonus defined`)); i++) { // Length of array - number of reels
+		for(let i = 0; i < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus !== undefined ? this.bonus.LEVEL.length : new Error(`Neither stage nor bonus defined`)); i++) { // Length of array - number of reels
 			this.resultBoard[i] = []; // Initalize board
-			for(let j = 0; j < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus ? this.bonus.LEVEL : new Error(`Neither stage nor bonus defined`)); j++) { // Draw symbol for each field
+			for(let j = 0; j < (this.stage !== undefined ? LEVELS[this.stage][i] : this.bonus !== undefined ? this.bonus.LEVEL[i] : new Error(`Neither stage nor bonus defined`)); j++) { // Draw symbol for each field
 				this.resultBoard[i][j] = this.drawSymbol(max);
 			}
 		}
@@ -58,7 +61,7 @@ export class Spin {
 				position: [ [] ]
 			});
 		});
-
+		console.log(this.resultBoard);
 		this.resultBoard.forEach((reel, i) => { // Start checking every reel
 			if(i === 0) { // If its first reel
 				reel.forEach((symbol, j) => { // Just push those to our result
@@ -111,6 +114,9 @@ export class Spin {
 					el.win *= p.length; // Multiply by times appeard
 				}
 			});
+			if(this.bonus && this.bonus.MULTI) {
+				el.win *= this.bonus.MULTI;
+			}
 			if(result.win !== undefined)
 				result.win += el.win;
 		});

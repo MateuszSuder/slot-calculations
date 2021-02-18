@@ -20,14 +20,16 @@ export class Bonus {
 		this.handleFeatures();
 
 		for(let i = 0; i < this.freeSpins; i++) {
-			new Spin(this.bet, {
+			const spin = (new Spin(this.bet, {
 				bonus: {
 					LEVEL: this.LEVEL as bonusExtend['LEVEL'],
 					SYMBOLS: slotSymbols,
 					MULTI: this.multiplier,
 					EXPAND: this.expandWilds
 				}
-			});
+			}));
+			spin.checkForWinnings();
+			this.spins.push(spin);
 		}
 	}
 
