@@ -1,5 +1,5 @@
+console.log('%cBonus.ts initalized', 'background: #000; color: #f00; font-size: 1rem; display: block; padding: 30px 100px;');
 /* eslint-disable no-unused-vars */
-
 import { bonusExtend, Features, featuresArray, FeaturesChances, FeaturesRanges, LEVELS, slotSymbols, specialSymbols } from './index';
 import { Spin } from './Spin';
 

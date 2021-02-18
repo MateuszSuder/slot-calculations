@@ -43,9 +43,9 @@ export class Spin {
 			return counter;
 		}; // Function for calculating max boundry
 		const max = countMax(); // Assign max boundry
-		for(let i = 0; i < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus !== undefined ? this.bonus.LEVEL.length : new Error(`Neither stage nor bonus defined`)); i++) { // Length of array - number of reels
+		for(let i = 0; i < (this.stage !== undefined ? LEVELS[this.stage].length : this.bonus !== undefined ? this.bonus.LEVEL.length : 0); i++) { // Length of array - number of reels
 			this.resultBoard[i] = []; // Initalize board
-			for(let j = 0; j < (this.stage !== undefined ? LEVELS[this.stage][i] : this.bonus !== undefined ? this.bonus.LEVEL[i] : new Error(`Neither stage nor bonus defined`)); j++) { // Draw symbol for each field
+			for(let j = 0; j < (this.stage !== undefined ? LEVELS[this.stage][i] : this.bonus !== undefined ? this.bonus.LEVEL[i] : 0); j++) { // Draw symbol for each field
 				this.resultBoard[i][j] = this.drawSymbol(max);
 			}
 		}
@@ -88,11 +88,11 @@ export class Spin {
 				position: [ [] ]
 			});
 		});
-		(this.bonus?.EXPAND === true ? this.resultExtended! : this.resultBoard).forEach((reel, i) => { // Start checking every reel
+		(this.bonus !== undefined && this.bonus.EXPAND === true && this.resultExtended ? this.resultExtended : this.resultBoard).forEach((reel, i) => { // Start checking every reel
 			if(i === 0) { // If its first reel
 				reel.forEach((symbol, j) => { // Just push those to our result
-					if(symbol.name !== slotSymbols[slotSymbols.length - 1].name) {
-						result.list[this.bonus === undefined ? slotSymbols.indexOf(symbol) : slotSymbols.indexOf(slotSymbols.find(el => el.name === symbol.name)!)].position[i].push(j);
+					if(symbol.name !== 'wild') {
+						result.list[symbol._index].position[i].push(j);
 					} else {
 						result.list.forEach(el => {
 							el.position[i].push(j);
@@ -101,13 +101,13 @@ export class Spin {
 				});
 			} else { // Otherwise...
 				reel.forEach((symbol, j) => { // Iterate every symbol
-					const helper = this.bonus === undefined ? slotSymbols.indexOf(symbol) : slotSymbols.indexOf(slotSymbols.find(el => el.name === symbol.name)!);
-					if(result.list[helper].position[i - 1] && result.list[helper].position[i - 1].length > 0) { // If theres symbol on reel before
-						if(result.list[helper].position[i] === undefined) // In not initalized
-							result.list[helper].position.push([]);
-						result.list[helper].position[i].push(j); // Push Y-cord of symbol
+					const properSymbols = this.bonus === undefined ? slotSymbols : (this.bonus.SYMBOLS ? this.bonus.SYMBOLS : slotSymbols);
+					if(result.list[symbol._index].position[i - 1] && result.list[symbol._index].position[i - 1].length > 0) { // If theres symbol on reel before
+						if(result.list[symbol._index].position[i] === undefined) // In not initalized
+							result.list[symbol._index].position.push([]);
+						result.list[symbol._index].position[i].push(j); // Push Y-cord of symbol
 					}
-					if(symbol.name === slotSymbols[helper].name) { // If its wild
+					if(symbol.name === 'wild') { // If its wild
 						result.list.forEach((a, k) => { // We need to add to every symbol win
 							if(k === result.list.length - 1) return; // If last, break
 

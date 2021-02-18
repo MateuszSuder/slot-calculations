@@ -1,3 +1,4 @@
+console.log('%cSpins.ts initalized', 'background: #000; color: #f00; font-size: 1rem; display: block; padding: 30px 100px;');
 import { Bonus } from './Bonus';
 import { Bet, bets, LEVELS } from './index';
 import { Spin } from './Spin';
@@ -41,7 +42,7 @@ export class Spins {
             if(i === LEVELS.length - 1) {
 				for(let j = 0; j < 3; j++) {
 					const spin = new Spin(this.bet, {stage: i});
-					spins.push(spin);
+					spins.push(spin);	
 					if(spin.checkForWinnings().win === 0) {
 						return spins;
 					}

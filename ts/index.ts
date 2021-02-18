@@ -18,7 +18,8 @@ export type SlotSymbol = {
     name: Names,
 	payouts: Payouts,
 	chances: Chances,
-	_tag: Tags
+	_tag: Tags,
+	_index: number
 }
 
 // type pos = {
@@ -133,22 +134,22 @@ chances.forEach((el, index) => {
 
 
 export const slotSymbols: SlotSymbol[] = [
-	{name: names[0], payouts: payouts[0], chances: chances[0], _tag: tags[0]} as const,
-	{name: names[1], payouts: payouts[1], chances: chances[1], _tag: tags[1]} as const,
-	{name: names[2], payouts: payouts[2], chances: chances[2], _tag: tags[2]} as const,
-	{name: names[3], payouts: payouts[3], chances: chances[3], _tag: tags[3]} as const,
-	{name: names[4], payouts: payouts[4], chances: chances[4], _tag: tags[4]} as const,
-	{name: names[5], payouts: payouts[5], chances: chances[5], _tag: tags[5]} as const,
-	{name: names[6], payouts: payouts[6], chances: chances[6], _tag: tags[6]} as const,
-	{name: names[7], payouts: payouts[7], chances: chances[7], _tag: tags[7]} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[8], _tag: tags[8]} as const
+	{name: names[0], payouts: payouts[0], chances: chances[0], _tag: tags[0], _index: 0} as const,
+	{name: names[1], payouts: payouts[1], chances: chances[1], _tag: tags[1], _index: 1} as const,
+	{name: names[2], payouts: payouts[2], chances: chances[2], _tag: tags[2], _index: 2} as const,
+	{name: names[3], payouts: payouts[3], chances: chances[3], _tag: tags[3], _index: 3} as const,
+	{name: names[4], payouts: payouts[4], chances: chances[4], _tag: tags[4], _index: 4} as const,
+	{name: names[5], payouts: payouts[5], chances: chances[5], _tag: tags[5], _index: 5} as const,
+	{name: names[6], payouts: payouts[6], chances: chances[6], _tag: tags[6], _index: 6} as const,
+	{name: names[7], payouts: payouts[7], chances: chances[7], _tag: tags[7], _index: 7} as const,
+	{name: names[8], payouts: payouts[8], chances: chances[8], _tag: tags[8], _index: 8} as const
 ];
 
 export const specialSymbols: SlotSymbol[] = [
-	{name: names[8], payouts: payouts[8], chances: chances[4], _tag: tags[9]} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[5], _tag: tags[10]} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[6], _tag: tags[11]} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[7], _tag: tags[12]} as const,
+	{name: names[8], payouts: payouts[8], chances: chances[4], _tag: tags[9], _index: 8} as const,
+	{name: names[8], payouts: payouts[8], chances: chances[5], _tag: tags[10], _index: 8} as const,
+	{name: names[8], payouts: payouts[8], chances: chances[6], _tag: tags[11], _index: 8} as const,
+	{name: names[8], payouts: payouts[8], chances: chances[7], _tag: tags[12], _index: 8} as const,
 ];
 
 export const LEVELS = [
@@ -172,6 +173,4 @@ function calculate(bet: number) {
 	console.log(s);
 	return s;
 }
-console.time();
-document.body.innerHTML = JSON.stringify(calculate(10));
-console.timeEnd();
+calculate(10);
