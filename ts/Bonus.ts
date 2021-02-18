@@ -23,7 +23,7 @@ export class Bonus {
 			const spin = (new Spin(this.bet, {
 				bonus: {
 					LEVEL: this.LEVEL as bonusExtend['LEVEL'],
-					SYMBOLS: slotSymbols,
+					SYMBOLS: this.slotSymbols,
 					MULTI: this.multiplier,
 					EXPAND: this.expandWilds
 				}

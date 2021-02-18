@@ -6,6 +6,7 @@ export class Spin {
 	resultBoard: SlotSymbol[][]= []; // Result stored in two dimensional array [reel][row]
 	stage?: number; // Which stage is spin in (Check LEVELS) - 0-5
 	bonus?: bonusExtend
+	resultExtended?: SlotSymbol[][];
 	winning: Winnings = { list: [] }; // Winnings
 
 	constructor(bet: number, rest: {stage?: number, bonus?: bonusExtend}) {
@@ -48,6 +49,32 @@ export class Spin {
 				this.resultBoard[i][j] = this.drawSymbol(max);
 			}
 		}
+
+		if(this.bonus?.EXPAND === true) {
+			this.resultExtended = JSON.parse(JSON.stringify(this.resultBoard));
+			this.resultBoard.forEach((a, i) => {
+				a.forEach((b, j) => {
+					if(b.name === 'wild') {
+						if(j === 0) {
+							if(this.resultExtended![i][1].name !== 'wild') {
+								this.resultExtended![i][1] = b;
+							}
+						} else if(j === a.length - 1) {
+							if(this.resultExtended![i][a.length - 2].name !== 'wild') {
+								this.resultExtended![i][a.length - 2] = b;
+							}
+						} else {
+							const whereToExpand = (Math.round(Math.random()) === 0) ? -1 : 1;
+							if(this.resultExtended![i][j + whereToExpand].name !== 'wild') {
+								this.resultExtended![i][j + whereToExpand] = b;
+							} else {
+								this.resultExtended![i][j - whereToExpand] = b;
+							}
+						}
+					}
+				});
+			});
+		}
 	}
 
 	public checkForWinnings(): Winnings { 
@@ -61,27 +88,26 @@ export class Spin {
 				position: [ [] ]
 			});
 		});
-		console.log(this.resultBoard);
-		this.resultBoard.forEach((reel, i) => { // Start checking every reel
+		(this.bonus?.EXPAND === true ? this.resultExtended! : this.resultBoard).forEach((reel, i) => { // Start checking every reel
 			if(i === 0) { // If its first reel
 				reel.forEach((symbol, j) => { // Just push those to our result
 					if(symbol.name !== slotSymbols[slotSymbols.length - 1].name) {
-						result.list[slotSymbols.indexOf(symbol)].position[i].push(j);
+						result.list[this.bonus === undefined ? slotSymbols.indexOf(symbol) : slotSymbols.indexOf(slotSymbols.find(el => el.name === symbol.name)!)].position[i].push(j);
 					} else {
 						result.list.forEach(el => {
 							el.position[i].push(j);
 						});
 					}
-					
 				});
 			} else { // Otherwise...
 				reel.forEach((symbol, j) => { // Iterate every symbol
-					if(result.list[slotSymbols.indexOf(symbol)].position[i - 1] && result.list[slotSymbols.indexOf(symbol)].position[i - 1].length > 0) { // If theres symbol on reel before
-						if(result.list[slotSymbols.indexOf(symbol)].position[i] === undefined) // In not initalized
-							result.list[slotSymbols.indexOf(symbol)].position.push([]);
-						result.list[slotSymbols.indexOf(symbol)].position[i].push(j); // Push Y-cord of symbol
+					const helper = this.bonus === undefined ? slotSymbols.indexOf(symbol) : slotSymbols.indexOf(slotSymbols.find(el => el.name === symbol.name)!);
+					if(result.list[helper].position[i - 1] && result.list[helper].position[i - 1].length > 0) { // If theres symbol on reel before
+						if(result.list[helper].position[i] === undefined) // In not initalized
+							result.list[helper].position.push([]);
+						result.list[helper].position[i].push(j); // Push Y-cord of symbol
 					}
-					if(symbol.name === slotSymbols[slotSymbols.length - 1].name) { // If its wild
+					if(symbol.name === slotSymbols[helper].name) { // If its wild
 						result.list.forEach((a, k) => { // We need to add to every symbol win
 							if(k === result.list.length - 1) return; // If last, break
 
@@ -98,10 +124,6 @@ export class Spin {
 		});
 
 		result.list = result.list.filter(el => el.position.length >= 3); // Filter not needed results
-
-		this.resultBoard.forEach(el => {
-			console.table(el);
-		});
 
 		result.win = 0;
 
@@ -121,7 +143,6 @@ export class Spin {
 				result.win += el.win;
 		});
 		this.winning = result;
-		console.log(result);
 		return result;
 	}
 }
