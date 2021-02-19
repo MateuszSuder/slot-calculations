@@ -101,7 +101,6 @@ export class Spin {
 				});
 			} else { // Otherwise...
 				reel.forEach((symbol, j) => { // Iterate every symbol
-					const properSymbols = this.bonus === undefined ? slotSymbols : (this.bonus.SYMBOLS ? this.bonus.SYMBOLS : slotSymbols);
 					if(result.list[symbol._index].position[i - 1] && result.list[symbol._index].position[i - 1].length > 0) { // If theres symbol on reel before
 						if(result.list[symbol._index].position[i] === undefined) // In not initalized
 							result.list[symbol._index].position.push([]);

@@ -59,7 +59,7 @@ export const featuresArray = [ 'Additional reel', // 1 position is already too m
 export type Features = typeof featuresArray[number];	
 
 export const FeaturesChances = [
-	2, 200, 5, 5, 5, 5, 5, 6, 8, 5, 10, 20, 30, 5, 20, 30
+	2, 2, 5, 5, 5, 5, 5, 6, 8, 5, 10, 20, 30, 5, 20, 30
 ] as const;
 
 export const FeaturesRanges: number[] = [];
@@ -116,7 +116,7 @@ export const payouts: Payouts[] = [
 	{x1: 0, x2: 0, x3: 2, x4: 3, x5: 6, x6: 7},
 	{x1: 0, x2: 0, x3: 3, x4: 4, x5: 6.5, x6: 8},
 	{x1: 0, x2: 0, x3: 3.5, x4: 5, x5: 7.5, x6: 9},
-	{x1: 0, x2: 0, x3: 7.5, x4: 10, x5: 12.5, x6: 10},
+	{x1: 0, x2: 0, x3: 7.5, x4: 8, x5: 8.5, x6: 10},
 ];
 
 export const chances = [
@@ -169,7 +169,7 @@ export type bonusExtend = {
 }
 
 function calculate(bet: number) {
-	const s = new Bonus(bet);
+	const s = new Spins(bet);
 	console.log(s);
 	return s;
 }

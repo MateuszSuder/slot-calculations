@@ -12,6 +12,7 @@ export class Bonus {
 	slotSymbols = JSON.parse(JSON.stringify(slotSymbols));
 	LEVEL = JSON.parse(JSON.stringify(LEVELS[LEVELS.length - 1]));
 	expandWilds = false;
+	win = 0;
 
 	constructor(bet: number) {
 		this.bet = bet;
@@ -29,6 +30,8 @@ export class Bonus {
 				}
 			}));
 			spin.checkForWinnings();
+			if(spin.winning.win)
+				this.win += spin.winning.win;
 			this.spins.push(spin);
 		}
 	}

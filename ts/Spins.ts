@@ -4,7 +4,6 @@ import { Bet, bets, LEVELS } from './index';
 import { Spin } from './Spin';
 
 export class Spins {
-    currentLevel = 0;
     totalWin = 0;
 
     bonus?: Bonus;
@@ -26,12 +25,12 @@ export class Spins {
             throw new Error(e);
         }
         
+        this.calculateTotalWin();
     }
     
     private getSpins() {
         const spins: Spin[] = [];
         for(let i = 0; i < LEVELS.length; i++) {
-            this.currentLevel = i;
             const spin = new Spin(this.bet, {stage: i});
             spins.push(spin);
 
@@ -52,5 +51,13 @@ export class Spins {
         }
         return spins;
     }
-    
+
+    private calculateTotalWin() {
+        this.spins.forEach(el => {
+            if(el.winning.win)
+                this.totalWin += el.winning.win;
+        });
+        if(this.bonus)
+            this.totalWin += this.bonus.win;
+    }
 }
