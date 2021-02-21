@@ -1,12 +1,14 @@
 import { featuresArray, SlotSymbol, slotSymbols, specialSymbols, Win } from './ts/index';
 import express from 'express';
+import bodyParser from 'body-parser';
 import { Spins } from './ts/Spins';
 import cors from 'cors';
 import { Spin } from './ts/Spin';
 import { Bonus } from './ts/Bonus';
 
-const app = express();
 const port = 4000;
+
+const app = express();
 
 const corsOptions = {
 	origin: 'http://localhost:3000',
@@ -14,6 +16,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(bodyParser.json());
 
 app.get('/spin/features', (req, res) => {
 	res.send(featuresArray);
@@ -33,19 +36,23 @@ app.get('/spin/symbols', (req, res) => {
 });
 
 app.post('/spin/spin', (req, res) => {
-	const spin = new Spins(10);
-	const result = new Proxy(spin, hideSensitive);
-	res.send(result);
+	try {
+		const spin = new Spins(req.body.bet);
+		const result = new Proxy(spin, hideSensitive);
+		res.send(result);
+	} catch(e) {
+		res.status(400).jsonp(e.message);
+	}
+	
 });
 
 app.listen(port, () => {
-	console.log('server running');
+	console.log(`Spin Service running on port ${port}`);
 });
-
 
 const symbolHandler = {
 	get: function(target: SlotSymbol, prop: keyof SlotSymbol) {
-		if([ 'payouts', 'chances' ].includes(prop)) {
+		if(prop.includes('_')) {
 			return;
 		} else {
 			return target[prop];
@@ -55,6 +62,8 @@ const symbolHandler = {
 
 const hideSensitive: any = {
 	get: function(target: Spins & Spin & Bonus & Win, prop: keyof typeof target) {
+		if([ 'name', 'index' ].includes(prop))
+			return;
 		if([ 'position', 'LEVEL', 'features' ].includes(prop))
 			return target[prop];
 		if(prop.toString().includes('_')) {

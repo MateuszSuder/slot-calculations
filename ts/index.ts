@@ -124,7 +124,7 @@ export const _payouts: Payouts[] = [
 ];
 
 export const _chances = [
-	200, 200, 125, 125, 100, 75, 60, 35, 2500
+	200, 200, 125, 125, 100, 75, 60, 35, 25
 ] as const;
 
 export type Chances = typeof _chances[number];

@@ -13,7 +13,7 @@ export class Spins {
 
     constructor(_bet: Bet) {
         if(bets.indexOf(_bet) === -1) {
-            throw Error(`I don't think ${_bet} is correct _bet`);
+            throw Error(`I don't think ${_bet} is correct bet`);
         } else {
             this._bet = _bet;
         }
