@@ -9,13 +9,13 @@ export class Spins {
     bonus?: Bonus;
     
     spins: Spin[] = [];
-    bet: Bet = 0;
+    _bet: Bet = 0;
 
-    constructor(bet: Bet) {
-        if(bets.indexOf(bet) === -1) {
-            throw Error(`I don't think ${bet} is correct bet`);
+    constructor(_bet: Bet) {
+        if(bets.indexOf(_bet) === -1) {
+            throw Error(`I don't think ${_bet} is correct _bet`);
         } else {
-            this.bet = bet;
+            this._bet = _bet;
         }
 
         try {
@@ -31,7 +31,7 @@ export class Spins {
     private getSpins() {
         const spins: Spin[] = [];
         for(let i = 0; i < LEVELS.length; i++) {
-            const spin = new Spin(this.bet, {stage: i});
+            const spin = new Spin(this._bet, {stage: i});
             spins.push(spin);
 
             if(spin.checkForWinnings().win === 0) {
@@ -40,13 +40,13 @@ export class Spins {
 
             if(i === LEVELS.length - 1) {
 				for(let j = 0; j < 3; j++) {
-					const spin = new Spin(this.bet, {stage: i});
+					const spin = new Spin(this._bet, {stage: i});
 					spins.push(spin);	
 					if(spin.checkForWinnings().win === 0) {
 						return spins;
 					}
 				}
-				this.bonus = new Bonus(this.bet);
+				this.bonus = new Bonus(this._bet);
             }
         }
         return spins;

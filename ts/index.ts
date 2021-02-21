@@ -16,10 +16,10 @@ export type Payout = keyof Payouts;
 
 export type SlotSymbol = {
     name: Names,
-	payouts: Payouts,
-	chances: Chances,
-	_tag: Tags,
-	_index: number
+	_payouts: Payouts,
+	_chances: Chances,
+	tag: Tags,
+	index: number
 }
 
 // type pos = {
@@ -88,15 +88,19 @@ export const tags = [
 export type Tags = typeof tags[number];
 
 export const names = [
-	'diamond',
-	'club', 
-	'heart',
-	'spade',
-	'triangleD',
-	'squareD',
-	'hexagonalD',
-	'sapphire',
-	'wild'
+	'Diamond',
+	'Club', 
+	'Heart',
+	'Spade',
+	'Tri-Diamond',
+	'Squared Diamond',
+	'Hex-Diamond',
+	'Sapphire',
+	'Wild',
+	'Tri-Diamond(Wild)',
+	'Squared Diamond(Wild)',
+	'Hex-Diamond(Wild)',
+	'Sapphire(Wild)'
 ] as const;
 
 export type Names = typeof names[number];
@@ -107,7 +111,7 @@ export const bets = [
 
 export type Bet = typeof bets[number];
 
-export const payouts: Payouts[] = [
+export const _payouts: Payouts[] = [
 	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
 	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
 	{x1: 0, x2: 0, x3: 0.1, x4: 1, x5: 1.5, x6: 3},
@@ -119,37 +123,37 @@ export const payouts: Payouts[] = [
 	{x1: 0, x2: 0, x3: 7.5, x4: 8, x5: 8.5, x6: 10},
 ];
 
-export const chances = [
-	125, 125, 125, 125, 100, 75, 60, 35, 25
+export const _chances = [
+	200, 200, 125, 125, 100, 75, 60, 35, 2500
 ] as const;
 
-export type Chances = typeof chances[number];
+export type Chances = typeof _chances[number];
 
-export const chancesRanges: number[] = [];
+export const _chancesRanges: number[] = [];
 
 // Fill ranges
-chances.forEach((el, index) => {
-	chancesRanges[index] = el + (index > 0 ? chancesRanges[index - 1] : 0);
+_chances.forEach((el, index) => {
+	_chancesRanges[index] = el + (index > 0 ? _chancesRanges[index - 1] : 0);
 });
 
 
 export const slotSymbols: SlotSymbol[] = [
-	{name: names[0], payouts: payouts[0], chances: chances[0], _tag: tags[0], _index: 0} as const,
-	{name: names[1], payouts: payouts[1], chances: chances[1], _tag: tags[1], _index: 1} as const,
-	{name: names[2], payouts: payouts[2], chances: chances[2], _tag: tags[2], _index: 2} as const,
-	{name: names[3], payouts: payouts[3], chances: chances[3], _tag: tags[3], _index: 3} as const,
-	{name: names[4], payouts: payouts[4], chances: chances[4], _tag: tags[4], _index: 4} as const,
-	{name: names[5], payouts: payouts[5], chances: chances[5], _tag: tags[5], _index: 5} as const,
-	{name: names[6], payouts: payouts[6], chances: chances[6], _tag: tags[6], _index: 6} as const,
-	{name: names[7], payouts: payouts[7], chances: chances[7], _tag: tags[7], _index: 7} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[8], _tag: tags[8], _index: 8} as const
+	{name: names[0], _payouts: _payouts[0], _chances: _chances[0], tag: tags[0], index: 0} as const,
+	{name: names[1], _payouts: _payouts[1], _chances: _chances[1], tag: tags[1], index: 1} as const,
+	{name: names[2], _payouts: _payouts[2], _chances: _chances[2], tag: tags[2], index: 2} as const,
+	{name: names[3], _payouts: _payouts[3], _chances: _chances[3], tag: tags[3], index: 3} as const,
+	{name: names[4], _payouts: _payouts[4], _chances: _chances[4], tag: tags[4], index: 4} as const,
+	{name: names[5], _payouts: _payouts[5], _chances: _chances[5], tag: tags[5], index: 5} as const,
+	{name: names[6], _payouts: _payouts[6], _chances: _chances[6], tag: tags[6], index: 6} as const,
+	{name: names[7], _payouts: _payouts[7], _chances: _chances[7], tag: tags[7], index: 7} as const,
+	{name: names[8], _payouts: _payouts[8], _chances: _chances[8], tag: tags[8], index: 8} as const
 ];
 
 export const specialSymbols: SlotSymbol[] = [
-	{name: names[8], payouts: payouts[8], chances: chances[4], _tag: tags[9], _index: 8} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[5], _tag: tags[10], _index: 8} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[6], _tag: tags[11], _index: 8} as const,
-	{name: names[8], payouts: payouts[8], chances: chances[7], _tag: tags[12], _index: 8} as const,
+	{name: names[9], _payouts: _payouts[8], _chances: _chances[4], tag: tags[9], index: 8} as const,
+	{name: names[10], _payouts: _payouts[8], _chances: _chances[5], tag: tags[10], index: 8} as const,
+	{name: names[11], _payouts: _payouts[8], _chances: _chances[6], tag: tags[11], index: 8} as const,
+	{name: names[12], _payouts: _payouts[8], _chances: _chances[7], tag: tags[12], index: 8} as const,
 ];
 
 export const LEVELS = [
@@ -167,10 +171,3 @@ export type bonusExtend = {
 	MULTI: 1 | 2 | 3 | 4 | 5 | 6,
 	EXPAND: boolean
 }
-
-function calculate(bet: number) {
-	const s = new Spins(bet);
-	console.log(s);
-	return s;
-}
-calculate(10);

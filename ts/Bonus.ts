@@ -6,27 +6,27 @@ import { Spin } from './Spin';
 export class Bonus {
 	spins: Spin[] = [];
 	features: [Features, Features, Features];
-	bet: number;
-	multiplier = 1 as bonusExtend['MULTI'];
-	freeSpins = 5;
-	slotSymbols = JSON.parse(JSON.stringify(slotSymbols));
-	LEVEL = JSON.parse(JSON.stringify(LEVELS[LEVELS.length - 1]));
-	expandWilds = false;
+	_bet: number;
+	_multiplier = 1 as bonusExtend['MULTI'];
+	_freeSpins = 5;
+	_slotSymbols = JSON.parse(JSON.stringify(slotSymbols));
+	_LEVEL = JSON.parse(JSON.stringify(LEVELS[LEVELS.length - 1]));
+	_expandWilds = false;
 	win = 0;
 
-	constructor(bet: number) {
-		this.bet = bet;
+	constructor(_bet: number) {
+		this._bet = _bet;
 
 		this.features = this.getFeatures();
 		this.handleFeatures();
 
-		for(let i = 0; i < this.freeSpins; i++) {
-			const spin = (new Spin(this.bet, {
+		for(let i = 0; i < this._freeSpins; i++) {
+			const spin = (new Spin(this._bet, {
 				bonus: {
-					LEVEL: this.LEVEL as bonusExtend['LEVEL'],
-					SYMBOLS: this.slotSymbols,
-					MULTI: this.multiplier,
-					EXPAND: this.expandWilds
+					LEVEL: this._LEVEL as bonusExtend['LEVEL'],
+					SYMBOLS: this._slotSymbols,
+					MULTI: this._multiplier,
+					EXPAND: this._expandWilds
 				}
 			}));
 			spin.checkForWinnings();
@@ -67,52 +67,52 @@ export class Bonus {
 		this.features.forEach(feature => {
 			switch (featuresArray.indexOf(feature)) {
 				case 0:
-					this.LEVEL.push(1);
+					this._LEVEL.push(1);
 					break;
 				case 1:
-					this.expandWilds = true;
+					this._expandWilds = true;
 					break;
 				case 2:
-					this.slotSymbols[4] = specialSymbols[0];
+					this._slotSymbols[4] = specialSymbols[0];
 					break;
 				case 3:
-					this.slotSymbols[5] = specialSymbols[1];
+					this._slotSymbols[5] = specialSymbols[1];
 					break;
 				case 4:
-					this.slotSymbols[6] = specialSymbols[2];
+					this._slotSymbols[6] = specialSymbols[2];
 					break;
 				case 5:
-					this.slotSymbols[7] = specialSymbols[3];
+					this._slotSymbols[7] = specialSymbols[3];
 					break;
 				case 6:
-					this.LEVEL[1] += 1;
+					this._LEVEL[1] += 1;
 					break;
 				case 7:
-					this.LEVEL[2] += 1;
+					this._LEVEL[2] += 1;
 					break;
 				case 8:
-					this.LEVEL[3] += 1;
+					this._LEVEL[3] += 1;
 					break;
 				case 9:
-					this.freeSpins += 8;
+					this._freeSpins += 8;
 					break;
 				case 10:
-					this.freeSpins += 4;
+					this._freeSpins += 4;
 					break;
 				case 11:
-					this.freeSpins += 2;
+					this._freeSpins += 2;
 					break;
 				case 12:
-					this.freeSpins += 1;
+					this._freeSpins += 1;
 					break;
 				case 13:
-					this.multiplier += 3;
+					this._multiplier += 3;
 					break;
 				case 14:
-					this.multiplier += 2;
+					this._multiplier += 2;
 					break;
 				case 15:
-					this.multiplier += 1;
+					this._multiplier += 1;
 					break;
 				default: 
 					throw new Error(`Wrong feature input! \n feature returned ${feature}`);
