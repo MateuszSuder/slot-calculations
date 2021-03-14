@@ -11,7 +11,7 @@ const port = 4000;
 const app = express();
 
 const corsOptions = {
-	origin: 'http://localhost:3000',
+	origin: 'http://localhost:9000',
 	optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 

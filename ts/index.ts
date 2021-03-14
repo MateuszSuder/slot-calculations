@@ -40,10 +40,10 @@ export type Winnings = {
 
 export const featuresArray = [ 'Additional reel', // 1 position is already too much, let's stick with that
 	'Expand every normal wild by 1',
-	'Transform Triangle Diamond into wild',
-	'Transform Square Diamond into wild',
-	'Transform Hexagonal Diamond into wild',
-	'Transform Sapphire into wild',
+	'Transform H1 into wild',
+	'Transform H2 into wild',
+	'Transform H3 into wild',
+	'Transform H4 into wild',
 	'Expand second reel',
 	'Expand third reel',
 	'Expand fourth reel',
@@ -92,15 +92,15 @@ export const names = [
 	'Club', 
 	'Heart',
 	'Spade',
-	'Tri-Diamond',
-	'Squared Diamond',
-	'Hex-Diamond',
-	'Sapphire',
+	'Blue Diamond',
+	'Green Diamond',
+	'Pink Diamond',
+	'Red Diamond',
 	'Wild',
-	'Tri-Diamond(Wild)',
-	'Squared Diamond(Wild)',
-	'Hex-Diamond(Wild)',
-	'Sapphire(Wild)'
+	'Blue Diamond(Wild)',
+	'Green Diamond(Wild)',
+	'Pink Diamond(Wild)',
+	'Red Diamond(Wild)'
 ] as const;
 
 export type Names = typeof names[number];
