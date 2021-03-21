@@ -41,7 +41,10 @@ app.post('/spin/spin', (req, res) => {
 		const result = new Proxy(spin, hideSensitive);
 		res.send(result);
 	} catch(e) {
-		res.status(400).jsonp(e.message);
+		const result = {
+			Error: e.message
+		};
+		res.status(400).jsonp(result);
 	}
 	
 });
